@@ -27,13 +27,13 @@ public class ConsumerThread extends Thread {
 				/*
 				 * Peterson solution start. Comment out when needed
 				 */
-				SharedData.flag[SharedData.CONSUMER_ID] = true;
+				/*SharedData.flag[SharedData.CONSUMER_ID] = true;
 				SharedData.turn = SharedData.CONSUMER_ID;
 				
 				while(SharedData.flag[SharedData.PRODUCER_ID] == true && SharedData.turn == SharedData.CONSUMER_ID) {
 					//busy wait
 					Debug.log(TAG, "Busy waiting");
-				}
+				}*/
 				
 				///START CRITICAL SECTION
 				if(SharedData.counter == 0) {
@@ -48,7 +48,7 @@ public class ConsumerThread extends Thread {
 					
 				}
 				///END CRITICAL SECTION	
-				SharedData.flag[SharedData.CONSUMER_ID] = false;
+				//SharedData.flag[SharedData.CONSUMER_ID] = false;
 				
 				
 			} catch(InterruptedException e) {
