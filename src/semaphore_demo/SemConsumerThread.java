@@ -26,7 +26,7 @@ public class SemConsumerThread extends Thread {
 				this.fullSem.acquire();
 				
 				///START CRITICAL SECTION
-				if(SharedData.counter == 0) {
+				/*if(SharedData.counter == 0) {
 					//do nothing
 					Debug.log(TAG, "Consumer did not consume. Buffer empty");
 				}
@@ -36,7 +36,11 @@ public class SemConsumerThread extends Thread {
 					SharedData.counter--;
 					Debug.log(TAG, "Consumer consumed. Counter is: " +SharedData.counter);
 
-				}
+				}*/
+				
+				int numberToConsume = SharedData.numberList[SharedData.counter];
+				SharedData.counter--;
+				Debug.log(TAG, "Consumer consumed. Counter is: " +SharedData.counter);
 				
 				this.emptySem.release();
 

@@ -33,7 +33,7 @@ public class SemProducerThread extends Thread {
 				
 				this.emptySem.acquire();
 				
-				///START CRITICAL SECTION
+				/*///START CRITICAL SECTION
 				if(SharedData.counter == SharedData.BUFFER_SIZE) {
 					//do nothing
 					Debug.log(TAG, "Producer did not produce. Buffer full");
@@ -45,7 +45,13 @@ public class SemProducerThread extends Thread {
 					SharedData.counter++;
 					Debug.log(TAG, "Producer produced. Counter is " +SharedData.counter);
 
-				}
+				}*/
+				
+				int numberProduce = 5;
+
+				SharedData.numberList[SharedData.counter] = numberProduce;
+				SharedData.counter++;
+				Debug.log(TAG, "Producer produced. Counter is " +SharedData.counter);
 				
 				this.fullSem.release();
 

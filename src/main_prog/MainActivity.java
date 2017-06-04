@@ -14,22 +14,22 @@ public class MainActivity {
 		SharedData.setup();
 		
 		///DEMO OF PETERSON'S SOLUTION AND CRITICAL SECTION PROBLEM	
-		ProducerThread producerThread = new ProducerThread();
+		/*ProducerThread producerThread = new ProducerThread();
 		producerThread.start();
 		
 		ConsumerThread consumerThread = new ConsumerThread();
-		consumerThread.start();
+		consumerThread.start();*/
 
 		///DEMO OF SEMAPHORE
 		//SimpleSemUsage simpleSemUsage = new SimpleSemUsage();
 		//simpleSemUsage.perform();
 		
 		///DEMO OF SEMAPHORE USAGE IN PRODUCER CONSUMER
-		/*SemProducerThread semProducerThread = new SemProducerThread();
+		SemProducerThread semProducerThread = new SemProducerThread();
 		semProducerThread.start();
 		
 		SemConsumerThread semConsumerThread = new SemConsumerThread();
-		semConsumerThread.start();*/
+		semConsumerThread.start();
 	}
 
 }

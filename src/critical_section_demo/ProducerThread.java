@@ -27,13 +27,13 @@ public class ProducerThread extends Thread {
 				/*
 				 * Peterson solution start. Comment out when needed
 				 */
-				/*SharedData.flag[SharedData.PRODUCER_ID] = true;
+				SharedData.flag[SharedData.PRODUCER_ID] = true;
 				SharedData.turn = SharedData.PRODUCER_ID;
 				
-				while(SharedData.flag[SharedData.CONSUMER_ID] == true && SharedData.turn == SharedData.PRODUCER_ID) {
+				while(/*SharedData.flag[SharedData.CONSUMER_ID] == true &&*/ SharedData.turn == SharedData.PRODUCER_ID) {
 					//busy wait
-					Debug.log(TAG, "Busy waiting");
-				}*/
+					//Debug.log(TAG, "Busy waiting");
+				}
 				
 				///START CRITICAL SECTION
 				if(SharedData.counter == SharedData.BUFFER_SIZE) {
@@ -49,7 +49,7 @@ public class ProducerThread extends Thread {
 					
 				}
 				///END CRITICAL SECTION
-				//SharedData.flag[SharedData.PRODUCER_ID] = false;
+				SharedData.flag[SharedData.PRODUCER_ID] = false;
 				
 				
 			} catch(InterruptedException e) {
