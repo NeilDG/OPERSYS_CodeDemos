@@ -30,7 +30,8 @@ public class ProducerThread extends Thread {
 				SharedData.flag[SharedData.PRODUCER_ID] = true;
 				SharedData.turn = SharedData.PRODUCER_ID;
 				
-				while(/*SharedData.flag[SharedData.CONSUMER_ID] == true &&*/ SharedData.turn == SharedData.PRODUCER_ID) {
+				while(/*SharedData.flag[SharedData.CONSUMER_ID] == true &&*/ 
+						SharedData.turn == SharedData.PRODUCER_ID) {
 					//busy wait
 					//Debug.log(TAG, "Busy waiting");
 				}

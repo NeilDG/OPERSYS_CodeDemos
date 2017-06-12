@@ -38,6 +38,7 @@ public class SemConsumerThread extends Thread {
 
 				}*/
 				
+				//en
 				int numberToConsume = SharedData.numberList[SharedData.counter];
 				SharedData.counter--;
 				Debug.log(TAG, "Consumer consumed. Counter is: " +SharedData.counter);
