@@ -5,6 +5,7 @@ import critical_section_demo.ProducerThread;
 import critical_section_demo.SharedData;
 import monitor_demo.MonitorConsumerThread;
 import monitor_demo.MonitorProducerThread;
+import scheduling.SchedulerSimulation;
 import semaphore_demo.SemConsumerThread;
 import semaphore_demo.SemProducerThread;
 import semaphore_demo.SimpleSemUsage;
@@ -38,11 +39,15 @@ public class MainActivity {
 		threadBarrierTest.start();*/
 		
 		///DEMO OF PRODUCER-CONSUMER USING MONITORS
-		MonitorProducerThread monProducerThread = new MonitorProducerThread();
+		/*MonitorProducerThread monProducerThread = new MonitorProducerThread();
 		monProducerThread.start();
 		
 		MonitorConsumerThread monConsumerThread = new MonitorConsumerThread();
-		monConsumerThread.start();
+		monConsumerThread.start();*/
+		
+		///DEMO OF CPU SCHEDULING
+		SchedulerSimulation scheduler = new SchedulerSimulation();
+		scheduler.startSimulation();
 		
 	}
 
