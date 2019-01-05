@@ -51,6 +51,15 @@ public class SchedulerSimulation {
 		
 		pQueue = arrangeByArrivalTime(P);
 		this.performFCFS(pQueue);
+		
+		P = new ProcessRep[4];
+		P[0] = new ProcessRep(0, 8, 0, 1);
+		P[1] = new ProcessRep(1, 4, 1, 1);
+		P[2] = new ProcessRep(2, 9, 2, 1);
+		P[3] = new ProcessRep(3, 5, 3, 1);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performShortestJobFirst(pQueue, true);
 	}
 	
 	private void performFCFS(Queue<ProcessRep> P) {
@@ -82,7 +91,7 @@ public class SchedulerSimulation {
 			cpuTime++;
 		}
 		
-		Debug.log(TAG, "=====FINISHED SIMULATION. EXECUTION ORDER=====");
+		Debug.log(TAG, "=====FCFS FINISHED SIMULATION. EXECUTION ORDER=====");
 		while(!finishedP.isEmpty()) {
 			ProcessExecutor f = finishedP.remove();
 			f.computeWaitingTime();
@@ -90,5 +99,64 @@ public class SchedulerSimulation {
 		}
 		
 		System.out.println();
+	}
+	
+	private void performShortestJobFirst(Queue<ProcessRep> P, boolean isPreemptive) {
+		LinkedList<ProcessExecutor> readyQueue = new LinkedList<ProcessExecutor>();
+		Queue<ProcessExecutor> finishedP = new LinkedList<ProcessExecutor>();
+		int cpuTime = 0;
+		ProcessExecutor current = null; //current process being executed
+		while(!P.isEmpty() || !readyQueue.isEmpty() || current != null) {
+			
+			while(!P.isEmpty() && P.peek().getArrivalTime() == cpuTime) {
+				ProcessExecutor e = ProcessExecutor.createExecutor(P.remove());
+				readyQueue.add(e);
+			}
+			
+			//ready queue and CPU processing
+			if(!readyQueue.isEmpty()) {
+				if(current == null) {
+					current = readyQueue.remove(this.findLowestTime(readyQueue));
+					current.setStartTime(cpuTime);
+				}
+				else if(readyQueue.peek().getRemainingTime() < current.getRemainingTime() && isPreemptive) {
+					readyQueue.add(current); //put back current and replace from ready queue
+					
+					current = readyQueue.remove(); 
+					current.setStartTime(cpuTime);
+				}
+				
+			}
+			
+			if(current != null) {
+				current.execute();
+				if(current.hasExecuted()) {
+					current.setEndTime(cpuTime + 1);
+					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
+					current = null;
+				}
+			}
+			cpuTime++;
+		}
+		
+		Debug.log(TAG, "=====SJF FINISHED SIMULATION. EXECUTION ORDER=====");
+		while(!finishedP.isEmpty()) {
+			ProcessExecutor f = finishedP.remove();
+			f.computeWaitingTime();
+			System.out.println("P["+f.getID()+ "] Start Time: " +f.getStartTime()+ " End time: " +f.getEndTime() + " Waiting time: " +f.getWaitingTime());
+		}
+		
+		System.out.println();
+	}
+	
+	private int findLowestTime(LinkedList<ProcessExecutor> P) {
+		int index = 0;
+		for(int i = 1; i < P.size(); i++) {
+			if(P.get(i).getRemainingTime() <= P.get(index).getRemainingTime()) {
+				index = i;
+			}
+		}
+		
+		return index;
 	}
 }
