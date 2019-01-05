@@ -17,6 +17,11 @@ public class ProcessExecutor {
 	private int arrivalTime;
 	private int cpuTime; //to be reduced after every execute() call
 	
+	private int startTime; //the official CPU start/end time for gantt chart debugging
+	private int endTime;
+	
+	private int waitingTime; //the total amount of time spent in the ready queue
+	
 	private ProcessExecutor() {
 		
 	}
@@ -31,6 +36,14 @@ public class ProcessExecutor {
 		if(!this.hasExecuted()) {
 			this.cpuTime--;
 		}
+	}
+	
+	public void computeWaitingTime() {
+		this.waitingTime += (this.startTime - this.arrivalTime);
+	}
+	
+	public int getWaitingTime() {
+		return this.waitingTime;
 	}
 	
 	public int getArrivalTime() {
@@ -49,6 +62,22 @@ public class ProcessExecutor {
 		return this.ID;
 	}
 	
+	public void setStartTime(int time) {
+		this.startTime = time;
+	}
+	
+	public void setEndTime(int time) {
+		this.endTime = time;
+	}
+	
+	public int getStartTime() {
+		return this.startTime;
+	}
+	
+	public int getEndTime() {
+		return this.endTime;
+	}
+	
 	public static ProcessExecutor createExecutor(ProcessRep P) {
 		return new ProcessExecutor(P);
 	}
@@ -58,6 +87,8 @@ public class ProcessExecutor {
 		F.arrivalTime = P.arrivalTime;
 		F.cpuTime = P.cpuTime;
 		F.ID = P.ID;
+		F.startTime = P.startTime;
+		F.endTime = P.endTime;
 		
 		return F;
 	}

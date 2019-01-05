@@ -18,6 +18,19 @@ import utils.Debug;
 public class SchedulerSimulation {
 	private final static String TAG = "MainActivity";
 	
+	/*
+	 * Util function that arranges an array P by arrival time and converts it into a queue.
+	 */
+	public static Queue<ProcessRep> arrangeByArrivalTime(ProcessRep[] P) {
+		Arrays.sort(P, new ProcessRep.ArrivalSorter());		
+		Queue<ProcessRep> pQueue = new LinkedList<ProcessRep>();
+		for(int i = 0; i < P.length; i++) {
+			Debug.log(TAG, "P["+P[i].getID()+"] Arrival Time: " +P[i].getArrivalTime()+ " Exec Time: " +P[i].getExecutionTime()+ " Priority: " +P[i].getPriority());
+			pQueue.add(P[i]);
+		}
+		
+		return pQueue;
+	}
 	//Should be called from a main thread.
 	public void startSimulation() {
 		ProcessRep[] P = new ProcessRep[10];
@@ -26,53 +39,56 @@ public class SchedulerSimulation {
 			P[i] = ProcessRep.generateRandomData(i);
 		}
 		
-		this.performFCFS(P);
-	}
-	
-	private void performFCFS(ProcessRep[] P) {
 		//arrange by arrival time
 		Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
-		Arrays.sort(P, new ProcessRep.ArrivalSorter());
-				
-		int currentCPUTime = 0;
-		Queue<ProcessExecutor> processQueue = new LinkedList<ProcessExecutor>();
-		for(int i = 0; i < P.length; i++) {
-			Debug.log(TAG, "P["+P[i].getID()+"] Arrival Time: " +P[i].getArrivalTime()+ " Exec Time: " +P[i].getExecutionTime()+ " Priority: " +P[i].getPriority());
-			processQueue.add(ProcessExecutor.createExecutor(P[i]));
-		}
+		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
+		this.performFCFS(pQueue);
 		
+		P = new ProcessRep[3];
+		P[0] = new ProcessRep(0, 24, 0, 1);
+		P[1] = new ProcessRep(1, 3, 0, 1);
+		P[2] = new ProcessRep(2, 3, 0, 1);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performFCFS(pQueue);
+	}
+	
+	private void performFCFS(Queue<ProcessRep> P) {
+		Queue<ProcessExecutor> readyQueue = new LinkedList<ProcessExecutor>();
 		Queue<ProcessExecutor> finishedP = new LinkedList<ProcessExecutor>();
-		ProcessExecutor current = null; //simulates a CPU core
-		
-		while(!processQueue.isEmpty()) {
-			ProcessExecutor E = processQueue.peek();
-			//Debug.log(TAG, "Process " +E.getID()+ " arrival time: " +E.getArrivalTime() + " current CPU time: " +currentCPUTime);
-			if(E.getArrivalTime() <= currentCPUTime && current == null) {
-				current = processQueue.remove();
-			}
-			else {
-				currentCPUTime++;
+		int cpuTime = 0;
+		ProcessExecutor current = null; //current process being executed
+		while(!P.isEmpty() || !readyQueue.isEmpty() || current != null) {
+			
+			while(!P.isEmpty() && P.peek().getArrivalTime() == cpuTime) {
+				ProcessExecutor e = ProcessExecutor.createExecutor(P.remove());
+				readyQueue.add(e);
 			}
 			
-			while(current != null) {
-				current.execute();
-				//Debug.log(TAG, "Process " +current.getID()+ " executing at time " +currentCPUTime);
-				if(current.hasExecuted()) {
-					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
-					current = null; //remove from CPU
-				}
-				
-				//increment CPU time
-				currentCPUTime++;
+			//ready queue and CPU processing
+			if(!readyQueue.isEmpty() && current == null) {
+				current = readyQueue.remove();
+				current.setStartTime(cpuTime);
 			}
+			
+			if(current != null) {
+				current.execute();
+				if(current.hasExecuted()) {
+					current.setEndTime(cpuTime + 1);
+					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
+					current = null;
+				}
+			}
+			cpuTime++;
 		}
 		
 		Debug.log(TAG, "=====FINISHED SIMULATION. EXECUTION ORDER=====");
 		while(!finishedP.isEmpty()) {
-			System.out.print("P["+finishedP.remove().getID()+ "] ");
+			ProcessExecutor f = finishedP.remove();
+			f.computeWaitingTime();
+			System.out.println("P["+f.getID()+ "] Start Time: " +f.getStartTime()+ " End time: " +f.getEndTime() + " Waiting time: " +f.getWaitingTime());
 		}
 		
 		System.out.println();
-		
 	}
 }
