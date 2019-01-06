@@ -21,7 +21,7 @@ public class ProcessRep {
 	private int priority = 0;
 	private int arrivalTime = 0;
 	
-	public ProcessRep(int ID, int exec, int arrival, int priority) {
+	public ProcessRep(int ID, int arrival, int exec, int priority) {
 		this.ID = ID;
 		this.executionTime = exec;
 		this.arrivalTime = arrival;
@@ -56,7 +56,7 @@ public class ProcessRep {
 		int priority = rand.nextInt(5);
 		int arrivalTime = rand.nextInt(10);
 		
-		return new ProcessRep(ID, exec, arrivalTime, priority);
+		return new ProcessRep(ID, arrivalTime, exec, priority);
 	}
 	
 	public static class ArrivalSorter implements Comparator<ProcessRep> {
