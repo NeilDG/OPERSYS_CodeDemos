@@ -51,7 +51,7 @@ public class SchedulerSimulation {
 		
 		pQueue = arrangeByArrivalTime(P);
 		this.performFCFS(pQueue);
-		
+
 		P = new ProcessRep[4];
 		P[0] = new ProcessRep(1, 0, 8, 1);
 		P[1] = new ProcessRep(2, 1, 4, 1);
@@ -80,6 +80,13 @@ public class SchedulerSimulation {
 		pQueue = arrangeByArrivalTime(P);
 		
 		this.performPriorityShortestJobFirst(pQueue, true);
+		
+		P = new ProcessRep[3];
+		P[0] = new ProcessRep(1, 0, 24, 1);
+		P[1] = new ProcessRep(2, 0, 3, 1);
+		P[2] = new ProcessRep(3, 0, 3, 1);
+		pQueue = arrangeByArrivalTime(P);
+		this.performRoundRobin(pQueue, 4);
 	}
 	
 	private void performFCFS(Queue<ProcessRep> P) {
@@ -225,6 +232,61 @@ public class SchedulerSimulation {
 		}
 		
 		Debug.log(TAG, "=====PRIORITY SJF FINISHED SIMULATION. EXECUTION ORDER=====");
+		for(int i = 0; i < finishedP.size(); i++) {
+			ProcessExecutor f = finishedP.get(i);
+			f.computeWaitingTime();
+			System.out.println("P["+f.getID()+ "] " +f.getTimeString()+  " Waiting time: " +f.getWaitingTime());
+		}
+		
+		System.out.println("Average waiting time:  "+ProcessExecutor.computeAVGWaitingTime((LinkedList<ProcessExecutor>) finishedP));
+		System.out.println();
+	}
+	
+	private void performRoundRobin(Queue<ProcessRep> P, int timeSlice) {
+		LinkedList<ProcessExecutor> readyQueue = new LinkedList<ProcessExecutor>();
+		LinkedList<ProcessExecutor> finishedP = new LinkedList<ProcessExecutor>();
+		int cpuTime = 0;
+		int slice = 0;
+		ProcessExecutor current = null; //current process being executed
+		while(!P.isEmpty() || !readyQueue.isEmpty() || current != null) {
+			
+			while(!P.isEmpty() && P.peek().getArrivalTime() == cpuTime) {
+				ProcessExecutor e = ProcessExecutor.createExecutor(P.remove());
+				readyQueue.add(e);
+			}
+			
+			//ready queue and CPU processing
+			if(!readyQueue.isEmpty()) {
+				if(current == null) {
+					current = readyQueue.pollFirst();
+					current.reportCPUEntry(cpuTime);
+					slice = 0;
+				}
+				else if(slice % timeSlice == 0) {
+					current.reportReadyQueueEntry(cpuTime);
+					readyQueue.add(current); //put back current and replace from ready queue
+					
+					current = readyQueue.pollFirst();
+					current.reportCPUEntry(cpuTime);
+					slice = 0;
+				}
+			}
+			
+			if(current != null) {
+				current.execute(); 
+				slice++;
+				if(current.hasExecuted()) {
+					current.reportFinished(cpuTime + 1);
+					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
+					current = null;
+				}
+			}
+			
+			
+			cpuTime++;
+		}
+		
+		Debug.log(TAG, "=====ROUND-ROBIN FINISHED SIMULATION. EXECUTION ORDER=====");
 		for(int i = 0; i < finishedP.size(); i++) {
 			ProcessExecutor f = finishedP.get(i);
 			f.computeWaitingTime();
