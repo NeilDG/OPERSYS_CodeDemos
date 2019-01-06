@@ -8,6 +8,7 @@ import java.util.Random;
 import utils.Debug;
 
 /**
+ * A data structure for a representing a process. It is treated as READ-ONLY data.
  * @author NeilDG
  *
  */
@@ -27,14 +28,17 @@ public class ProcessRep {
 		this.priority = priority;
 	}
 	
+	//Returns the process total execution/CPU time required to finish.
 	public int getExecutionTime() {
 		return this.executionTime;
 	}
 	
+	//Returns the priority level, higher value = higher priority.
 	public int getPriority() {
 		return this.priority;
 	}
 	
+	//Returns the supposed arrival time in the ready queue.
 	public int getArrivalTime() {
 		return this.arrivalTime;
 	}
@@ -43,6 +47,9 @@ public class ProcessRep {
 		return this.ID;
 	}
 	
+	/*
+	 * Convenience function that generates random process data for stress-testing.
+	 */
 	public static ProcessRep generateRandomData(int ID) {
 		Random rand = new Random();
 		int exec = rand.nextInt(20);

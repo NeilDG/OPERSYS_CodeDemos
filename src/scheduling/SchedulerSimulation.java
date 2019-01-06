@@ -53,10 +53,10 @@ public class SchedulerSimulation {
 		this.performFCFS(pQueue);
 		
 		P = new ProcessRep[4];
-		P[0] = new ProcessRep(0, 8, 0, 1);
-		P[1] = new ProcessRep(1, 4, 1, 1);
-		P[2] = new ProcessRep(2, 9, 2, 1);
-		P[3] = new ProcessRep(3, 5, 3, 1);
+		P[0] = new ProcessRep(1, 8, 0, 1);
+		P[1] = new ProcessRep(2, 4, 1, 1);
+		P[2] = new ProcessRep(3, 9, 2, 1);
+		P[3] = new ProcessRep(4, 5, 3, 1);
 		
 		pQueue = arrangeByArrivalTime(P);
 		this.performShortestJobFirst(pQueue, true);
@@ -77,13 +77,13 @@ public class SchedulerSimulation {
 			//ready queue and CPU processing
 			if(!readyQueue.isEmpty() && current == null) {
 				current = readyQueue.remove();
-				current.setStartTime(cpuTime);
+				current.reportCPUEntry(cpuTime);
 			}
 			
 			if(current != null) {
 				current.execute();
 				if(current.hasExecuted()) {
-					current.setEndTime(cpuTime + 1);
+					current.reportFinished(cpuTime + 1);
 					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
 					current = null;
 				}
@@ -117,13 +117,14 @@ public class SchedulerSimulation {
 			if(!readyQueue.isEmpty()) {
 				if(current == null) {
 					current = readyQueue.remove(this.findLowestTime(readyQueue));
-					current.setStartTime(cpuTime);
+					current.reportCPUEntry(cpuTime);
 				}
 				else if(readyQueue.peek().getRemainingTime() < current.getRemainingTime() && isPreemptive) {
+					current.reportReadyQueueEntry(cpuTime);
 					readyQueue.add(current); //put back current and replace from ready queue
 					
 					current = readyQueue.remove(); 
-					current.setStartTime(cpuTime);
+					current.reportCPUEntry(cpuTime);
 				}
 				
 			}
@@ -131,7 +132,7 @@ public class SchedulerSimulation {
 			if(current != null) {
 				current.execute();
 				if(current.hasExecuted()) {
-					current.setEndTime(cpuTime + 1);
+					current.reportFinished(cpuTime + 1);
 					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
 					current = null;
 				}
