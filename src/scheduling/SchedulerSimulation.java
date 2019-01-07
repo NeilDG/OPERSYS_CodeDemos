@@ -91,7 +91,7 @@ public class SchedulerSimulation {
 	
 	private void performFCFS(Queue<ProcessRep> P) {
 		Queue<ProcessExecutor> readyQueue = new LinkedList<ProcessExecutor>();
-		Queue<ProcessExecutor> finishedP = new LinkedList<ProcessExecutor>();
+		LinkedList<ProcessExecutor> finishedP = new LinkedList<ProcessExecutor>();
 		int cpuTime = 0;
 		ProcessExecutor current = null; //current process being executed
 		while(!P.isEmpty() || !readyQueue.isEmpty() || current != null) {
@@ -119,12 +119,13 @@ public class SchedulerSimulation {
 		}
 		
 		Debug.log(TAG, "=====FCFS FINISHED SIMULATION. EXECUTION ORDER=====");
-		while(!finishedP.isEmpty()) {
-			ProcessExecutor f = finishedP.remove();
+		for(int i = 0; i < finishedP.size(); i++) {
+			ProcessExecutor f = finishedP.get(i);
 			f.computeWaitingTime();
-			System.out.println("P["+f.getID()+ "] Start Time: " +f.getStartTime()+ " End time: " +f.getEndTime() + " Waiting time: " +f.getWaitingTime());
+			System.out.println("P["+f.getID()+ "] " +f.getTimeString()+  " Waiting time: " +f.getWaitingTime());
 		}
 		
+		System.out.println("Average waiting time:  "+ProcessExecutor.computeAVGWaitingTime((LinkedList<ProcessExecutor>) finishedP));
 		System.out.println();
 	}
 	
