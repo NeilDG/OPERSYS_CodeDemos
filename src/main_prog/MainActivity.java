@@ -5,7 +5,6 @@ import critical_section_demo.ProducerThread;
 import critical_section_demo.SharedData;
 import monitor_demo.MonitorConsumerThread;
 import monitor_demo.MonitorProducerThread;
-import scheduling.SchedulerSimulation;
 import semaphore_demo.SemConsumerThread;
 import semaphore_demo.SemProducerThread;
 import semaphore_demo.SimpleSemUsage;

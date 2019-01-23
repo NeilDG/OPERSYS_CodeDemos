@@ -10,7 +10,7 @@ import java.util.Queue;
  * @author delgallegon
  *
  */
-public class VehicleLine extends Thread {
+public class VehicleLine_Answer extends Thread {
 	
 	private int threadID = 0;
 	private int queueInterval = 0;
@@ -20,9 +20,9 @@ public class VehicleLine extends Thread {
 	private int maxCounter = 0;
 
 	private Queue<Vehicle> waitingLine = new LinkedList<Vehicle>();
-	private TrafficLight light;
+	private TrafficLight_Answer light;
 	
-	public VehicleLine(int threadID, int queueInterval, int goInterval, int maxVehicles, TrafficLight light) {
+	public VehicleLine_Answer(int threadID, int queueInterval, int goInterval, int maxVehicles, TrafficLight_Answer light) {
 		this.threadID = threadID;
 		this.queueInterval = queueInterval;
 		this.goInterval = goInterval;

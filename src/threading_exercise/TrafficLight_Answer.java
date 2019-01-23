@@ -8,7 +8,7 @@ package threading_exercise;
  * @author delgallegon
  *
  */
-public class TrafficLight extends Thread {
+public class TrafficLight_Answer extends Thread {
 
 	private int threadID = 0;
 	private int interval = 0;
@@ -16,7 +16,7 @@ public class TrafficLight extends Thread {
 	
 	private boolean green = false;
 	
-	public TrafficLight(int threadID, int interval) {
+	public TrafficLight_Answer(int threadID, int interval) {
 		this.threadID = threadID;
 		this.interval = interval;
 	}
