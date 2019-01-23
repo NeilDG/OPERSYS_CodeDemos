@@ -21,6 +21,13 @@ public class ExerciseMain {
 	}
 	
 	private void trafficExercise() {
+		System.out.println("This is a test run.");
+		
+		TrafficLight light = new TrafficLight(1500);
+		light.start();
+		
+		VehicleLine line = new VehicleLine(250, 100, 20, light);
+		line.start();
 		
 	}
 }
