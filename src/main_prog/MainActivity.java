@@ -10,6 +10,7 @@ import semaphore_demo.SemConsumerThread;
 import semaphore_demo.SemProducerThread;
 import semaphore_demo.SimpleSemUsage;
 import semaphore_demo.ThreadBarrierTest;
+import threading_exercise.ExerciseMain;
 
 public class MainActivity {
 	private final static String TAG = "MainActivity";
@@ -46,8 +47,12 @@ public class MainActivity {
 		monConsumerThread.start();*/
 		
 		///DEMO OF CPU SCHEDULING
-		SchedulerSimulation scheduler = new SchedulerSimulation();
-		scheduler.startSimulation();
+		//SchedulerSimulation scheduler = new SchedulerSimulation();
+		//scheduler.startSimulation();
+		
+		//DEMO OF BASIC THREADING
+		ExerciseMain exerciseMain = new ExerciseMain();
+		exerciseMain.startExercise();
 		
 	}
 
