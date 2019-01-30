@@ -34,25 +34,21 @@ public class SchedulerSimulation {
 	//Should be called from a main thread.
 	public void startSimulation() {
 		ProcessRep[] P = new ProcessRep[7];
-		P[0] = new ProcessRep(0, 0, 15, 1);
-		P[1] = new ProcessRep(1, 6, 6, 1);
-		P[2] = new ProcessRep(2, 4, 1, 1);
-		P[3] = new ProcessRep(2, 8, 17, 1);
-		P[4] = new ProcessRep(2, 9, 19, 1);
-		P[5] = new ProcessRep(2, 9, 11, 1);
-		P[6] = new ProcessRep(2, 5, 12, 1);
+		
 		/*for(int i = 0; i < P.length; i++) {
 			P[i] = ProcessRep.generateRandomData(i);
 		}*/
+		
+		P[0] = new ProcessRep(0, 0, 14, 0);
+		P[1] = new ProcessRep(1, 1, 28, 2);
+		P[2] = new ProcessRep(2, 2, 3, 3);
+		P[3] = new ProcessRep(3, 3, 12, 0);
+		P[4] = new ProcessRep(4, 9, 10, 2);
+		P[5] = new ProcessRep(5, 8, 14, 1);
+		P[6] = new ProcessRep(6, 7, 15, 2);
 		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
-		this.performFCFS(pQueue);
-		
-		pQueue = arrangeByArrivalTime(P);
-		this.performShortestJobFirst(pQueue, true);
-		
-		pQueue = arrangeByArrivalTime(P);
-		this.performRoundRobin(pQueue, 4);
-		
+		this.performPriorityShortestJobFirst(pQueue, true);
+				
 		//arrange by arrival time
 		/*Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
 		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
@@ -237,6 +233,7 @@ public class SchedulerSimulation {
 				current.execute();
 				if(current.hasExecuted()) {
 					current.reportFinished(cpuTime + 1);
+					readyQueue.remove(current);
 					finishedP.add(ProcessExecutor.makeFinishedCopy(current));
 					current = null;
 				}
@@ -301,7 +298,7 @@ public class SchedulerSimulation {
 			cpuTime++;
 		}
 		
-		Debug.log(TAG, "=====ROUND-ROBIN FINISHED SIMULATION. EXECUTION ORDER=====");
+		Debug.log(TAG, "=====ROUND-ROBIN FINISHED SIMULATION. EXECUTION ORDER OF TIME SLICE "+timeSlice+"=====");
 		for(int i = 0; i < finishedP.size(); i++) {
 			ProcessExecutor f = finishedP.get(i);
 			f.computeWaitingTime();
