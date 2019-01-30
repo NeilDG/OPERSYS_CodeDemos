@@ -47,12 +47,12 @@ public class MainActivity {
 		monConsumerThread.start();*/
 		
 		///DEMO OF CPU SCHEDULING
-		//SchedulerSimulation scheduler = new SchedulerSimulation();
-		//scheduler.startSimulation();
+		SchedulerSimulation scheduler = new SchedulerSimulation();
+		scheduler.startSimulation();
 		
 		//DEMO OF BASIC THREADING
-		ExerciseMain exerciseMain = new ExerciseMain();
-		exerciseMain.startExercise();
+		//ExerciseMain exerciseMain = new ExerciseMain();
+		//exerciseMain.startExercise();
 		
 	}
 

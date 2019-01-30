@@ -52,7 +52,7 @@ public class ProcessRep {
 	 */
 	public static ProcessRep generateRandomData(int ID) {
 		Random rand = new Random();
-		int exec = rand.nextInt(20);
+		int exec = rand.nextInt(20) + 1;
 		int priority = rand.nextInt(5);
 		int arrivalTime = rand.nextInt(10);
 		

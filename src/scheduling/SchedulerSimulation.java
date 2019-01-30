@@ -33,14 +33,28 @@ public class SchedulerSimulation {
 	}
 	//Should be called from a main thread.
 	public void startSimulation() {
-		ProcessRep[] P = new ProcessRep[10];
-		
-		for(int i = 0; i < P.length; i++) {
+		ProcessRep[] P = new ProcessRep[7];
+		P[0] = new ProcessRep(0, 0, 15, 1);
+		P[1] = new ProcessRep(1, 6, 6, 1);
+		P[2] = new ProcessRep(2, 4, 1, 1);
+		P[3] = new ProcessRep(2, 8, 17, 1);
+		P[4] = new ProcessRep(2, 9, 19, 1);
+		P[5] = new ProcessRep(2, 9, 11, 1);
+		P[6] = new ProcessRep(2, 5, 12, 1);
+		/*for(int i = 0; i < P.length; i++) {
 			P[i] = ProcessRep.generateRandomData(i);
-		}
+		}*/
+		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
+		this.performFCFS(pQueue);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performShortestJobFirst(pQueue, true);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performRoundRobin(pQueue, 4);
 		
 		//arrange by arrival time
-		Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
+		/*Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
 		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
 		this.performFCFS(pQueue);
 		
@@ -86,7 +100,7 @@ public class SchedulerSimulation {
 		P[1] = new ProcessRep(2, 0, 3, 1);
 		P[2] = new ProcessRep(3, 0, 3, 1);
 		pQueue = arrangeByArrivalTime(P);
-		this.performRoundRobin(pQueue, 4);
+		this.performRoundRobin(pQueue, 4);*/
 	}
 	
 	private void performFCFS(Queue<ProcessRep> P) {

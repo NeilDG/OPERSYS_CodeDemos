@@ -76,7 +76,8 @@ public class ProcessExecutor {
 		
 		for(int i = 1; i < this.metricList.size(); i++) {
 			MetricInfo M2 = this.metricList.get(i);
-			this.waitingTime += (M2.startTime - M.endTime);
+			MetricInfo M1 = this.metricList.get(i - 1);
+			this.waitingTime += (M2.startTime - M1.endTime);
 		}
 	}
 	
