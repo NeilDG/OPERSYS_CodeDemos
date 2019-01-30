@@ -33,22 +33,21 @@ public class SchedulerSimulation {
 	}
 	//Should be called from a main thread.
 	public void startSimulation() {
-		ProcessRep[] P = new ProcessRep[7];
+		ProcessRep[] P = new ProcessRep[8];
 		
-		/*for(int i = 0; i < P.length; i++) {
+		for(int i = 0; i < P.length; i++) {
 			P[i] = ProcessRep.generateRandomData(i);
-		}*/
+		}
 		
-		P[0] = new ProcessRep(0, 0, 14, 0);
-		P[1] = new ProcessRep(1, 1, 28, 2);
-		P[2] = new ProcessRep(2, 2, 3, 3);
-		P[3] = new ProcessRep(3, 3, 12, 0);
-		P[4] = new ProcessRep(4, 9, 10, 2);
-		P[5] = new ProcessRep(5, 8, 14, 1);
-		P[6] = new ProcessRep(6, 7, 15, 2);
 		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
-		this.performPriorityShortestJobFirst(pQueue, true);
-				
+		this.performFCFS(pQueue);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performShortestJobFirst(pQueue, true);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performRoundRobin(pQueue, 6);
+		
 		//arrange by arrival time
 		/*Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
 		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
