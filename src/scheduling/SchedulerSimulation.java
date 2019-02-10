@@ -35,7 +35,7 @@ public class SchedulerSimulation {
 	public void startSimulation() {
 		ProcessRep[] P = new ProcessRep[8];
 		
-		for(int i = 0; i < P.length; i++) {
+		/*for(int i = 0; i < P.length; i++) {
 			P[i] = ProcessRep.generateRandomData(i);
 		}
 		
@@ -46,7 +46,7 @@ public class SchedulerSimulation {
 		this.performShortestJobFirst(pQueue, true);
 		
 		pQueue = arrangeByArrivalTime(P);
-		this.performRoundRobin(pQueue, 6);
+		this.performRoundRobin(pQueue, 6);*/
 		
 		//arrange by arrival time
 		/*Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
@@ -68,7 +68,7 @@ public class SchedulerSimulation {
 		P[3] = new ProcessRep(4, 3, 5, 1);
 		
 		pQueue = arrangeByArrivalTime(P);
-		this.performShortestJobFirst(pQueue, true);
+		this.performShortestJobFirst(pQueue, true);*/
 		
 		P = new ProcessRep[5];
 		P[0] = new ProcessRep(1, 0, 7, 1);
@@ -76,11 +76,11 @@ public class SchedulerSimulation {
 		P[2] = new ProcessRep(3, 3, 3, 1);
 		P[3] = new ProcessRep(4, 5, 8, 1);
 		P[4] = new ProcessRep(5, 6, 5, 1);
-		pQueue = arrangeByArrivalTime(P);
+		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
 		
 		this.performShortestJobFirst(pQueue, true);
 		
-		P = new ProcessRep[5];
+		/*P = new ProcessRep[5];
 		P[0] = new ProcessRep(1, 0, 10, 10 - 3); //deduction added because in book example, low numbers = high priority
 		P[1] = new ProcessRep(2, 0, 1, 10 - 1);
 		P[2] = new ProcessRep(3, 0, 2, 10 - 4);
@@ -311,7 +311,7 @@ public class SchedulerSimulation {
 	private int findLowestTime(LinkedList<ProcessExecutor> P) {
 		int index = 0;
 		for(int i = 1; i < P.size(); i++) {
-			if(P.get(i).getRemainingTime() <= P.get(index).getRemainingTime()) {
+			if(P.get(i).getRemainingTime() < P.get(index).getRemainingTime()) {
 				index = i;
 			}
 		}
