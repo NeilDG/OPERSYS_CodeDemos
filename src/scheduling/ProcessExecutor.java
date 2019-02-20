@@ -73,6 +73,7 @@ public class ProcessExecutor {
 		this.waitingTime = 0;
 		MetricInfo M = this.metricList.get(0);
 		this.waitingTime += (M.startTime - this.arrivalTime);
+		//Debug.log("P["+this.ID+"]", "Start time: " +M.startTime+ " Arrival time: " +this.arrivalTime);
 		
 		for(int i = 1; i < this.metricList.size(); i++) {
 			MetricInfo M2 = this.metricList.get(i);

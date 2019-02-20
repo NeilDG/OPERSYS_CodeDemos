@@ -40,13 +40,37 @@ public class SchedulerSimulation {
 		}
 		
 		Queue<ProcessRep> pQueue = arrangeByArrivalTime(P);
+		//this.performFCFS(pQueue);
+		
+		pQueue = arrangeByArrivalTime(P);
+		//this.performShortestJobFirst(pQueue, true);
+		
+		pQueue = arrangeByArrivalTime(P);
+		//this.performRoundRobin(pQueue, 6);
+		
+		P = new ProcessRep[10];
+		P[0] = new ProcessRep(1, 0, 7, 2);
+		P[1] = new ProcessRep(2, 1, 11, 3);
+		P[2] = new ProcessRep(3, 2, 6, 3);
+		P[3] = new ProcessRep(4, 3, 5, 3);
+		P[4] = new ProcessRep(5, 4, 5, 1);
+		P[5] = new ProcessRep(6, 6, 2, 3);
+		P[6] = new ProcessRep(7, 7, 3, 2);
+		P[7] = new ProcessRep(8, 8, 6, 1);
+		P[8] = new ProcessRep(9, 9, 3, 2);
+		P[9] = new ProcessRep(10, 10, 3, 2);
+		
+		pQueue = arrangeByArrivalTime(P);
 		this.performFCFS(pQueue);
 		
 		pQueue = arrangeByArrivalTime(P);
 		this.performShortestJobFirst(pQueue, true);
 		
 		pQueue = arrangeByArrivalTime(P);
-		this.performRoundRobin(pQueue, 6);
+		this.performPriorityShortestJobFirst(pQueue, true);
+		
+		pQueue = arrangeByArrivalTime(P);
+		this.performRoundRobin(pQueue, 5);
 		
 		//arrange by arrival time
 		/*Debug.log(TAG, "=====SORTING BY ARRIVAL TIME=====");
@@ -311,7 +335,11 @@ public class SchedulerSimulation {
 	private int findLowestTime(LinkedList<ProcessExecutor> P) {
 		int index = 0;
 		for(int i = 1; i < P.size(); i++) {
-			if(P.get(i).getRemainingTime() <= P.get(index).getRemainingTime()) {
+			if(P.get(i).getRemainingTime() < P.get(index).getRemainingTime()) {
+				index = i;
+			}
+			else if(P.get(i).getRemainingTime() == P.get(index).getRemainingTime() &&
+					P.get(i).getArrivalTime() <= P.get(index).getArrivalTime()) {
 				index = i;
 			}
 		}
